@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobMail AI - Chrome Extension for OA Detection</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .tagline {
+      font-size: 20px;
+      opacity: 0.95;
+      margin-bottom: 32px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 8px;
+    }
+
+    .content {
+      padding: 60px 40px;
+    }
+
+    .section {
+      margin-bottom: 50px;
+    }
+
+    h2 {
+      color: #667eea;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      color: #333;
+      font-size: 20px;
+      margin: 30px 0 15px 0;
+    }
+
+    p {
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 12px 0;
+      color: #555;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    li:before {
+      content: "✓ ";
+      color: #667eea;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 30px;
+    }
+
+    .feature-card {
+      background: #f8f9fa;
+      padding: 24px;
+      border-radius: 12px;
+      border-left: 4px solid #667eea;
+    }
+
+    .feature-card h3 {
+      margin-top: 0;
+      color: #667eea;
+      font-size: 18px;
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      border-radius: 12px;
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .cta-box h2 {
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: white;
+      color: #667eea;
+      padding: 16px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s;
+      margin: 8px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    code {
+      background: #f4f4f4;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #d63384;
+    }
+
+    .install-steps {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .install-steps ol {
+      list-style: decimal;
+      padding-left: 24px;
+    }
+
+    .install-steps li {
+      margin-bottom: 16px;
+    }
+
+    .install-steps li:before {
+      content: none;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: white;
+      padding: 30px 40px;
+      text-align: center;
+    }
+
+    footer p {
+      color: rgba(255, 255, 255, 0.8);
+      margin: 8px 0;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .tech-badge {
+      background: #e9ecef;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #495057;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📧 JobMail AI</h1>
+      <p class="tagline">Never miss an Online Assessment invite again!</p>
+      <div>
+        <span class="badge">Chrome Extension</span>
+        <span class="badge">Built-in AI</span>
+        <span class="badge">Gemini Nano</span>
+        <span class="badge">Privacy-First</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="section">
+        <h2>🎯 What is JobMail AI?</h2>
+        <p>
+          JobMail AI is a Chrome Extension that automatically detects and summarizes Online Assessment (OA) emails 
+          in your Gmail inbox using Chrome's built-in AI APIs powered by Gemini Nano.
+        </p>
+        <p>
+          Built for the <strong>Google Chrome Built-in AI Challenge 2025</strong>, this extension helps job seekers 
+          never miss time-sensitive coding assessment invitations from companies.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>✨ Key Features</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>🔍 Auto Detection</h3>
+            <p>Automatically monitors your Gmail inbox and detects OA emails using AI classification</p>
+          </div>
+          <div class="feature-card">
+            <h3>📝 Smart Summaries</h3>
+            <p>Extracts key details like deadline, platform, and instructions using Summarizer API</p>
+          </div>
+          <div class="feature-card">
+            <h3>🔔 Instant Alerts</h3>
+            <p>Get browser notifications the moment an OA email arrives</p>
+          </div>
+          <div class="feature-card">
+            <h3>✨ Visual Highlighting</h3>
+            <p>OA emails get highlighted with yellow background and OA badge in Gmail</p>
+          </div>
+          <div class="feature-card">
+            <h3>📊 Dashboard</h3>
+            <p>Track all detected OA emails with summaries in a beautiful dashboard</p>
+          </div>
+          <div class="feature-card">
+            <h3>🔒 Privacy First</h3>
+            <p>All AI processing happens locally in your browser - no data sent anywhere!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🧠 Chrome Built-in AI APIs Used</h2>
+        <ul>
+          <li><strong>Prompt API</strong> - Classifies emails into OA_INVITE, REJECTION, STATUS_UPDATE, or OTHER</li>
+          <li><strong>Summarizer API</strong> - Extracts key information and generates email summaries</li>
+        </ul>
+        <p style="margin-top: 20px;">
+          All powered by <strong>Gemini Nano</strong> running locally in Chrome - fast, private, and works offline!
+        </p>
+      </div>
+
+      <div class="cta-box">
+        <h2>🚀 Get Started</h2>
+        <p style="color: white; opacity: 0.95; margin-bottom: 24px;">
+          Ready to never miss an OA again? Follow the installation guide to set up the extension.
+        </p>
+        <a href="INSTALLATION.md" class="btn">Installation Guide</a>
+        <a href="README.md" class="btn">Read Documentation</a>
+      </div>
+
+      <div class="section">
+        <h2>📦 Quick Installation</h2>
+        <div class="install-steps">
+          <ol>
+            <li>Download Chrome Canary or Chrome Dev (version 128+)</li>
+            <li>Enable AI flags in <code>chrome://flags</code></li>
+            <li>Download the Gemini Nano model (first time only)</li>
+            <li>Load the extension from <code>chrome://extensions/</code></li>
+            <li>Open Gmail and let the magic happen!</li>
+          </ol>
+          <p style="margin-top: 20px;">
+            <strong>Note:</strong> Requires Chrome Canary/Dev with AI features enabled. See INSTALLATION.md for detailed steps.
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🔑 Detects These Keywords</h2>
+        <p>The extension automatically identifies emails containing terms like:</p>
+        <div class="tech-stack">
+          <span class="tech-badge">Online Assessment</span>
+          <span class="tech-badge">HackerRank</span>
+          <span class="tech-badge">CodeSignal</span>
+          <span class="tech-badge">Codility</span>
+          <span class="tech-badge">Coding Test</span>
+          <span class="tech-badge">Technical Assessment</span>
+          <span class="tech-badge">Programming Test</span>
+          <span class="tech-badge">Take-home Assignment</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🏗️ Technical Stack</h2>
+        <div class="tech-stack">
+          <span class="tech-badge">Manifest V3</span>
+          <span class="tech-badge">Chrome Prompt API</span>
+          <span class="tech-badge">Chrome Summarizer API</span>
+          <span class="tech-badge">Gemini Nano</span>
+          <span class="tech-badge">Vanilla JavaScript</span>
+          <span class="tech-badge">Chrome Storage API</span>
+          <span class="tech-badge">Content Scripts</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🎯 Hackathon Information</h2>
+        <ul>
+          <li><strong>Challenge:</strong> Google Chrome Built-in AI Challenge 2025</li>
+          <li><strong>Category:</strong> Most Helpful - Chrome Extension</li>
+          <li><strong>Prize:</strong> $14,000 (+ virtual coffee with Chrome team)</li>
+          <li><strong>Deadline:</strong> October 31, 2025, 11:45 PM PDT</li>
+          <li><strong>Problem Solved:</strong> Job seekers missing time-sensitive OA invites</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>📄 License</h2>
+        <p>This project is open source and available under the MIT License.</p>
+      </div>
+    </div>
+
+    <footer>
+      <p><strong>JobMail AI</strong> - Built with ❤️ for the Chrome Built-in AI Challenge 2025</p>
+      <p>Powered by Gemini Nano and Chrome's Built-in AI APIs</p>
+      <p style="margin-top: 16px; font-size: 14px;">Created by Vikhas</p>
+    </footer>
+  </div>
+</body>
+</html>

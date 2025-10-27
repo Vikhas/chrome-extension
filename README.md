@@ -152,10 +152,35 @@ Created by **Vikhas** - Feel free to reach out!
 
 **⭐ If you find this extension helpful, please star the repository!**
 
+## 📋 Current Capabilities & Limitations
+
+### What Works Well
+- ✅ Detects OA emails using subject lines and preview snippets
+- ✅ AI classification works with available inbox data
+- ✅ Visual highlighting and notifications function perfectly
+- ✅ Keyword-based fallback ensures high detection rate
+- ✅ All processing happens locally (privacy-first)
+
+### Known Limitations
+- ⚠️ **Email Body Access:** The extension currently analyzes subject + sender + Gmail preview snippet (~100-150 chars). Full email body retrieval would require opening each message or Gmail API integration, which is beyond the scope of this hackathon MVP.
+- ⚠️ **Summaries:** AI summaries are based on preview text. For detailed information, users should click through to the email.
+- ✅ **Mitigation:** Strong keyword detection ensures OA emails are identified even without full content analysis.
+
+### Why This Approach?
+This design prioritizes:
+1. **Performance** - Fast scanning without opening every email
+2. **Privacy** - No external API calls or data collection
+3. **Reliability** - Works immediately without complex setup
+4. **Hackathon Timeline** - Functional MVP within 4 days
+
+For a production version, Gmail API integration would enable full email body analysis.
+
 ## 🔮 Future Enhancements
 
-- 📅 Deadline tracking with calendar integration
+- 📧 Gmail API integration for full email body access
+- 📅 Deadline extraction and tracking with calendar integration
 - 🌐 Multilingual support with Translator API
 - ✍️ Email reply proofreading with Proofreader API
 - 🎨 Multimodal support (analyze company logos)
 - 📊 Analytics dashboard with application tracking
+- 🔗 Direct links to assessment platforms
