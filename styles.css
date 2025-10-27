@@ -1,0 +1,22 @@
+.jobmail-oa-detected {
+  background-color: #fff9e6 !important;
+  border-left: 4px solid #667eea !important;
+}
+
+.jobmail-oa-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  margin-right: 8px;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+}
+
+.jobmail-oa-detected .y6,
+.jobmail-oa-detected .bog {
+  font-weight: 600 !important;
+}

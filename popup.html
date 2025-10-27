@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobMail AI Dashboard</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <h1>JobMail AI</h1>
+        <p class="subtitle">OA Email Detector</p>
+      </div>
+      <div class="stats">
+        <span id="emailCount" class="count">0</span>
+        <span class="count-label">OA Detected</span>
+      </div>
+    </header>
+
+    <div class="actions">
+      <button id="scanBtn" class="btn btn-primary">
+        <span class="btn-icon">🔍</span>
+        Scan Inbox Now
+      </button>
+      <button id="clearBtn" class="btn btn-secondary">
+        <span class="btn-icon">🗑️</span>
+        Clear All
+      </button>
+    </div>
+
+    <div class="email-list" id="emailList">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">📭</div>
+        <p>No OA emails detected yet</p>
+        <p class="empty-hint">Open Gmail and click "Scan Inbox Now" or wait for automatic detection</p>
+      </div>
+    </div>
+
+    <footer>
+      <div class="settings-toggle">
+        <label class="toggle-switch">
+          <input type="checkbox" id="notificationsToggle" checked>
+          <span class="slider"></span>
+        </label>
+        <span>Enable Notifications</span>
+      </div>
+      <div class="footer-info">
+        <p>Powered by Chrome Built-in AI</p>
+        <p class="version">v1.0.0</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
