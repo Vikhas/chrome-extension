@@ -1,0 +1,103 @@
+Here’s a **clear, rephrased summary** of the key details and requirements for the **Google Chrome Built-in AI Challenge 2025** — tailored for you so you can plan your Chrome Extension project effectively 👇
+
+---
+
+## 🧠 Overview
+
+The **Google Chrome Built-in AI Challenge 2025** invites developers to **build web applications or Chrome extensions** powered by **Gemini Nano** and Chrome’s new **built-in AI APIs**.
+The goal is to show how client-side AI can enhance the web — fast, private, and available offline.
+
+---
+
+## 🧩 What You Can Build
+
+You must create a **new** web app or Chrome Extension that uses **one or more** of the following **Chrome built-in AI APIs**:
+
+* **Prompt API** – generate structured, multimodal prompts (supports image/audio input)
+* **Summarizer API** – extract insights or summaries from text
+* **Writer API** – generate new, creative text
+* **Rewriter API** – improve or rephrase text
+* **Proofreader API** – fix grammar and clarity
+* **Translator API** – translate text to multiple languages
+
+You can also integrate **Gemini Developer API** or **Firebase AI Logic** for hybrid or cloud-assisted features.
+
+---
+
+## 💡 What to Submit
+
+Your submission must include:
+
+1. **A working web app or Chrome Extension** using one or more of the built-in AI APIs.
+2. **A short text description** that explains:
+
+   * What your app/extension does
+   * Which APIs you used
+   * What problem it solves
+3. **A demo video (under 3 minutes)** showing your app in action.
+
+   * Upload to YouTube or Vimeo and make it public.
+4. **A public GitHub repository** with:
+
+   * Open source license
+   * Setup instructions for testing
+   * A working build or hosted link for judges to access
+5. *(Optional)* Fill out the **feedback form** for a chance to win the “Most Valuable Feedback” prize.
+
+---
+
+## 🕒 Deadline
+
+**October 31, 2025, 11:45 PM PDT**
+
+---
+
+## 💰 Prizes
+
+**Total Prize Pool: $70,000**
+
+| Category                                 | Prize   | Count     |
+| ---------------------------------------- | ------- | --------- |
+| 🏆 Most Helpful – Chrome Extension       | $14,000 | 1 winner  |
+| 🧠 Best Multimodal AI – Chrome Extension | $9,000  | 1 winner  |
+| 🔗 Best Hybrid AI – Chrome Extension     | $9,000  | 1 winner  |
+| 🌐 Most Helpful – Web App                | $14,000 | 1 winner  |
+| 🖼️ Best Multimodal AI – Web App         | $9,000  | 1 winner  |
+| ⚙️ Best Hybrid AI – Web App              | $9,000  | 1 winner  |
+| 🏅 Honorable Mentions                    | $1,000  | 5 winners |
+| 💬 Most Valuable Feedback                | $200    | 5 winners |
+
+All winners get a **virtual coffee chat** with Chrome team members and potential promotion on Google’s channels.
+
+---
+
+## 🧭 Judging Criteria
+
+1. **Functionality:** How well do the APIs integrate? Is it scalable and widely usable?
+2. **Purpose:** Does it improve a real user task or unlock something new?
+3. **Content & Creativity:** Is it original, visually appealing, and polished?
+4. **User Experience:** Is it intuitive, clear, and pleasant to use?
+5. **Technical Execution:** How well do you showcase Chrome’s built-in AI APIs?
+
+---
+
+## 👥 Eligibility
+
+* Must be **above the legal age of majority** in your country.
+* Open globally, except for restricted territories listed in the official rules.
+* Projects must be **new** (no reuse of previous hackathon submissions).
+
+---
+
+## 🧰 Recommended Next Steps
+
+1. **Join the Hackathon on Devpost** and the **Discord community**.
+2. **Sign up for Chrome’s Early Preview Program** to access APIs.
+3. **Plan your project** — choose which API(s) you’ll use (Prompt, Summarizer, etc.).
+4. **Develop and host** your extension or web app.
+5. **Record your demo video** and upload your GitHub repo before the deadline.
+
+---
+
+Would you like me to tailor your **OA-Detector Chrome Extension** idea to meet these **official challenge requirements** (e.g., integrating the **Summarizer or Proofreader API** instead of external APIs like OpenAI/Gemini Cloud)?
+That way, you’ll be fully compliant *and* competitive for the “Most Helpful Chrome Extension” prize.

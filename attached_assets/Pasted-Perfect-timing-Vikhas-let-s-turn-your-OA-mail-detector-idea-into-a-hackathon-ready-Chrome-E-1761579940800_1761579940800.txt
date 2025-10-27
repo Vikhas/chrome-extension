@@ -1,0 +1,186 @@
+Perfect timing, Vikhas — let’s turn your **OA mail detector** idea into a **hackathon-ready Chrome Extension** that fits *exactly* with the **Google Chrome Built-in AI Challenge 2025** rules and APIs.
+
+Below are a few **implementation ideas** (from simple → advanced) that all use **Chrome’s built-in AI APIs (Prompt, Summarizer, Proofreader, etc.)** — so your submission will be eligible and impressive 👇
+
+---
+
+## 💡 MAIN IDEA
+
+### 🧭 Project Name: **JobMail AI – Never Miss an OA**
+
+A Chrome Extension that automatically **detects Online Assessment (OA) or Interview emails** in your inbox and highlights them using Chrome’s **Prompt** + **Summarizer APIs**.
+
+Whenever you open Gmail or another mail tab, the extension:
+
+* Reads the email subject and preview text.
+* Uses Chrome’s AI to **summarize** and **classify** the mail.
+* Notifies you if it detects OA/invite words like *“assessment,” “HackerRank,” “CodeSignal,” “online test,” “take-home assignment,”* etc.
+
+---
+
+## ⚙️ IMPLEMENTATION IDEAS
+
+### 🔹 **1. Summarizer API for OA Detection (Main Flow)**
+
+Use the **Summarizer API** (client-side) to process the email content and extract:
+
+* Purpose of the email (recruiter update, OA link, rejection, etc.)
+* Important details (deadline, link, platform name)
+
+**Example flow:**
+
+```js
+const summary = await ai.summarizer.summarizeText(emailContent);
+if (summary.includes("online assessment") || summary.includes("coding test")) {
+   notifyUser(summary);
+}
+```
+
+🧠 **Why it fits:** Uses Chrome’s built-in AI locally, aligns perfectly with “Most Helpful Extension” judging criteria.
+
+---
+
+### 🔹 **2. Prompt API for Classification**
+
+Use the **Prompt API** to classify each email.
+
+**Prompt example:**
+
+> "Analyze this email and respond with one label: [OA_INVITE, REJECTION, STATUS_UPDATE, OTHER]."
+
+```js
+const result = await ai.prompt.promptText({
+  prompt: `Analyze the following email and tell if it is an OA invite:\n${emailContent}`
+});
+if (result.output.includes("OA_INVITE")) {
+  showNotification("🎯 OA detected!", "You received an assessment invite!");
+}
+```
+
+🧠 **Bonus:** You can make this multimodal later (e.g., process company logo images in emails).
+
+---
+
+### 🔹 **3. Smart Email Summarizer (Add-on Feature)**
+
+Whenever you open a job-related email, the extension shows a small popup (content script) summarizing the mail with:
+
+* OA platform
+* Deadline
+* Link summary
+* Key instructions
+
+**Implementation:**
+Use the **Summarizer API** to generate a TL;DR of the mail and inject it into the Gmail UI dynamically.
+
+---
+
+### 🔹 **4. Proofreader API (Bonus Utility)**
+
+If you reply to recruiters or submit follow-ups, your extension can use the **Proofreader API** to polish your email draft.
+
+**Example feature:**
+When typing a reply in Gmail, a small button appears:
+
+> ✨ “AI Proofread Reply”
+
+It automatically checks grammar and tone via:
+
+```js
+const corrected = await ai.proofreader.proofreadText(draftContent);
+```
+
+---
+
+### 🔹 **5. Dashboard + Local Storage**
+
+Use Chrome’s local storage to keep a list of:
+
+* Detected OA emails
+* Summaries
+* Status (opened/unopened)
+
+Simple popup dashboard (React optional):
+
+```js
+chrome.storage.local.get(["oaMails"], (data) => displayList(data.oaMails));
+```
+
+---
+
+## 🧱 EXTENSION STRUCTURE
+
+| File            | Purpose                                       |
+| --------------- | --------------------------------------------- |
+| `manifest.json` | Defines permissions + AI API access           |
+| `background.js` | Fetches emails periodically                   |
+| `content.js`    | Injects summaries and highlights inside Gmail |
+| `popup.html`    | Dashboard + manual “Scan Inbox” button        |
+| `popup.js`      | Triggers AI checks                            |
+| `styles.css`    | UI polish                                     |
+
+---
+
+## 🎯 AI API Integration (Client-Side)
+
+All Chrome’s built-in AI APIs (Prompt, Summarizer, etc.) are accessible **client-side**, meaning:
+
+* No server needed ✅
+* Fast and private ✅
+* Meets challenge theme: *AI running in Chrome with Gemini Nano* ✅
+
+Example snippet:
+
+```js
+const summary = await ai.summarizer.summarizeText(emailBody);
+console.log("Summary:", summary);
+```
+
+---
+
+## 🧠 ADVANCED ADD-ONS (if time permits)
+
+| Feature                | Description                                        | API                         |
+| ---------------------- | -------------------------------------------------- | --------------------------- |
+| 🔍 Job Matcher         | Match email content with job title you applied for | Prompt API                  |
+| ⏰ Deadline Tracker     | Auto add OA deadlines to Google Calendar           | Summarizer API              |
+| 🌐 Multilingual Emails | Translate recruiter emails                         | Translator API              |
+| 📝 Rephrase Follow-Up  | Suggest better follow-up replies                   | Rewriter API                |
+| 🧭 Offline Mode        | Cache AI models using Gemini Nano                  | Built-in AI Local Execution |
+
+---
+
+## 🏁 Submission Plan
+
+When submitting to Devpost:
+
+1. **Name:** “JobMail AI – Chrome Extension to Detect Online Assessments”
+2. **Short Description:**
+
+   > A Chrome Extension that uses Chrome’s built-in AI (Summarizer + Prompt APIs) to detect, summarize, and notify job applicants of online assessment emails automatically.
+3. **Demo Video (≤3 min):**
+
+   * Show Gmail
+   * Show AI detection + summary popup
+   * Show “Proofread Reply” feature (optional)
+4. **GitHub Repo:**
+
+   * Include `manifest.json`
+   * Installation steps
+   * Example screenshots/gif
+   * License (MIT recommended)
+
+---
+
+## 🧩 Suggestion for You
+
+Since you already wanted to detect **OA emails**, the **best combination for the hackathon** would be:
+
+> **Summarizer API + Prompt API**
+> to classify and summarize recruiter emails directly in the Gmail tab, all client-side.
+
+This keeps your extension simple, privacy-friendly, and totally aligned with Google’s “Built-in AI” challenge.
+
+---
+
+Would you like me to now create a **detailed step-by-step implementation plan** (with code structure for Manifest V3 and example API calls to Summarizer + Prompt APIs) so you can start building it right away?
