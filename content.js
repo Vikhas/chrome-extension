@@ -24,7 +24,7 @@ async function initializeAI() {
 
     if (capabilities.available === 'readily') {
       promptSession = await ai.languageModel.create({
-        systemPrompt: 'You are a helpful AI assistant for processing emails. You can classify emails and summarize them.'
+        systemPrompt: 'You are an email classifier. Analyze emails and classify them as: OA_INVITE (online assessment/coding test invitation), REJECTION, STATUS_UPDATE, or OTHER. Respond with only the classification label.'
       });
       aiSessionReady = true;
       console.log('JobMail AI: AI session initialized successfully ✓');
@@ -88,16 +88,24 @@ function fallbackClassification(emailContent) {
 
 async function summarizeEmail(emailContent) {
   try {
-    if (aiSessionReady && promptSession) {
-      const prompt = `Summarize the following email content in one short sentence, focusing on the key action or information. Keep it under 20 words.\n\nEmail:\n${emailContent}`;
-      const summary = await promptSession.prompt(prompt);
-      console.log('JobMail AI: Generated summary with AI using prompt API');
-      return summary;
-    } else {
-      console.log('JobMail AI: AI session not ready, using fallback for summary.');
+    if (typeof ai !== 'undefined' && ai.summarizer) {
+      const canSummarize = await ai.summarizer.capabilities();
+      if (canSummarize.available === 'readily') {
+        const session = await ai.summarizer.create({
+          type: 'key-points',
+          format: 'plain-text',
+          length: 'short'
+        });
+        const summary = await session.summarize(emailContent);
+        session.destroy();
+        console.log('JobMail AI: Generated summary with AI');
+        return summary;
+      } else {
+        console.log('JobMail AI: Summarizer not ready, using fallback');
+      }
     }
   } catch (error) {
-    console.error('JobMail AI: Summarization error with prompt API:', error);
+    console.error('JobMail AI: Summarizer error:', error);
   }
   
   const maxLength = 200;
