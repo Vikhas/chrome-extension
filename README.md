@@ -185,3 +185,4 @@ For a production version, Gmail API integration would enable full email body ana
 - 📊 Analytics dashboard with application tracking
 - 🔗 Direct links to assessment platforms
 # AI-chrome-extension
+# mail-filter-extension
