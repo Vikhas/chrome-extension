@@ -10,6 +10,7 @@ const OA_KEYWORDS = [
 let processedEmails = new Set();
 let aiSessionReady = false;
 let promptSession = null;
+let summarizerPromptSession = null;
 
 async function initializeAI() {
   try {
@@ -24,7 +25,10 @@ async function initializeAI() {
 
     if (capabilities.available === 'readily') {
       promptSession = await ai.languageModel.create({
-        systemPrompt: 'You are a helpful AI assistant for processing emails. You can classify emails and summarize them.'
+        systemPrompt: 'You are an email classifier. Analyze emails and classify them as: OA_INVITE (online assessment/coding test invitation), REJECTION, STATUS_UPDATE, or OTHER. Respond with only the classification label.'
+      });
+      summarizerPromptSession = await ai.languageModel.create({
+        systemPrompt: 'You are an email summarizer. Take the provided email content and generate a concise, one-sentence summary of 20 words or less.'
       });
       aiSessionReady = true;
       console.log('JobMail AI: AI session initialized successfully ✓');
@@ -88,9 +92,9 @@ function fallbackClassification(emailContent) {
 
 async function summarizeEmail(emailContent) {
   try {
-    if (aiSessionReady && promptSession) {
+    if (aiSessionReady && summarizerPromptSession) {
       const prompt = `Summarize the following email content in one short sentence, focusing on the key action or information. Keep it under 20 words.\n\nEmail:\n${emailContent}`;
-      const summary = await promptSession.prompt(prompt);
+      const summary = await summarizerPromptSession.prompt(prompt);
       console.log('JobMail AI: Generated summary with AI using prompt API');
       return summary;
     } else {
