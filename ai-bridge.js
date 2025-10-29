@@ -1,30 +1,32 @@
 // ai-bridge.js
 
 let aiSessionReady = false;
-let promptSession = null;
-let summarizer = null;
+let classifierSession = null;
+let summarizerSession = null;
 
 async function initializeAI() {
   try {
-    if (typeof ai === 'undefined') {
-      console.warn('JobMail AI: Chrome AI APIs not available in main world.');
+    if (typeof LanguageModel === 'undefined') {
+      console.warn('JobMail AI: LanguageModel API not available in main world.');
       return false;
     }
 
-    const canCreate = await window.ai.canCreateTextSession();
-    if (canCreate === "no") {
-        console.warn('JobMail AI: Cannot create AI session.');
-        return false;
-    }
-
-    promptSession = await window.ai.createTextSession({
-      systemPrompt: 'You are an email classifier. Analyze emails and classify them as: OA_INVITE (online assessment/coding test invitation), REJECTION, STATUS_UPDATE, or OTHER. Respond with only the classification label.'
+    classifierSession = await LanguageModel.create({
+      initialPrompts: [{
+        role: 'system',
+        content: 'You are an email classifier. Analyze emails and classify them as: OA_INVITE (online assessment/coding test invitation), REJECTION, STATUS_UPDATE, or OTHER. Respond with only the classification label.'
+      }]
     });
 
-    summarizer = await ai.summarizer.create();
+    summarizerSession = await LanguageModel.create({
+        initialPrompts: [{
+            role: 'system',
+            content: 'You are an email summarizer. Take the provided email content and generate a concise, one-sentence summary of 20 words or less.'
+        }]
+    });
 
     aiSessionReady = true;
-    console.log('JobMail AI: AI session initialized successfully in main world ✓');
+    console.log('JobMail AI: AI sessions initialized successfully in main world using LanguageModel.create ✓');
     return true;
   } catch (error) {
     console.error('JobMail AI: Error initializing AI in main world:', error);
@@ -33,13 +35,13 @@ async function initializeAI() {
 }
 
 async function classifyEmailWithAI(emailContent) {
-  if (!aiSessionReady || !promptSession) {
+  if (!aiSessionReady || !classifierSession) {
     return 'OTHER';
   }
 
   try {
     const prompt = `Classify this email. Respond with only one word: OA_INVITE, REJECTION, STATUS_UPDATE, or OTHER.\n\nEmail:\n${emailContent.substring(0, 1000)}`;
-    const result = await promptSession.prompt(prompt);
+    const result = await classifierSession.prompt(prompt);
     return result;
   } catch (error) {
     console.error('JobMail AI: AI classification error in main world:', error);
@@ -48,11 +50,12 @@ async function classifyEmailWithAI(emailContent) {
 }
 
 async function summarizeEmail(emailContent) {
-  if (!aiSessionReady || !summarizer) {
+  if (!aiSessionReady || !summarizerSession) {
     return emailContent.substring(0, 200) + '...';
   }
   try {
-    const summary = await summarizer.summarize(emailContent);
+    const prompt = `Summarize the following email content in one short sentence, focusing on the key action or information. Keep it under 20 words.\n\nEmail:\n${emailContent}`;
+    const summary = await summarizerSession.prompt(prompt);
     return summary;
   } catch (error) {
     console.error('JobMail AI: Summarizer error in main world:', error);
