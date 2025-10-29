@@ -11,35 +11,43 @@ let processedEmails = new Set();
 let aiSessionReady = false;
 let promptSession = null;
 
-async function initializeAI() {
-  try {
-    if (typeof ai === 'undefined' || !ai.languageModel) {
-      console.warn('JobMail AI: Chrome AI APIs not available. Using fallback keyword detection.');
-      console.warn('JobMail AI: To enable AI features, visit chrome://flags and enable Prompt API and Summarizer API');
-      return false;
-    }
+const pendingAIRequests = new Map();
 
-    const capabilities = await ai.languageModel.capabilities();
-    console.log('JobMail AI: AI capabilities:', capabilities);
+function generateRequestId() {
+  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+}
 
-    if (capabilities.available === 'readily') {
-      promptSession = await ai.languageModel.create({
-        systemPrompt: 'You are an email classifier. Analyze emails and classify them as: OA_INVITE (online assessment/coding test invitation), REJECTION, STATUS_UPDATE, or OTHER. Respond with only the classification label.'
-      });
-      aiSessionReady = true;
-      console.log('JobMail AI: AI session initialized successfully ✓');
-      return true;
-    } else if (capabilities.available === 'after-download') {
-      console.log('JobMail AI: AI model downloading... Please wait and reload Gmail.');
-      return false;
-    } else {
-      console.warn('JobMail AI: AI not available. Capabilities:', capabilities);
-      return false;
-    }
-  } catch (error) {
-    console.error('JobMail AI: Error initializing AI:', error);
-    return false;
+window.addEventListener('message', (event) => {
+  if (event.source !== window || !event.data || event.data.source !== 'jobmail-ai-bridge') {
+    return;
   }
+
+  const { type, payload, requestId } = event.data;
+  if (pendingAIRequests.has(requestId)) {
+    const { resolve } = pendingAIRequests.get(requestId);
+    resolve(payload);
+    pendingAIRequests.delete(requestId);
+  }
+});
+
+function callAI(type, payload) {
+  return new Promise((resolve, reject) => {
+    const requestId = generateRequestId();
+    pendingAIRequests.set(requestId, { resolve, reject });
+    window.postMessage({
+      source: 'jobmail-content-script',
+      type,
+      payload,
+      requestId
+    }, '*');
+
+    setTimeout(() => {
+        if (pendingAIRequests.has(requestId)) {
+            reject(new Error('AI request timed out'));
+            pendingAIRequests.delete(requestId);
+        }
+    }, 10000);
+  });
 }
 
 function containsOAKeywords(text) {
@@ -49,13 +57,7 @@ function containsOAKeywords(text) {
 
 async function classifyEmailWithAI(emailContent) {
   try {
-    if (!aiSessionReady || !promptSession) {
-      return fallbackClassification(emailContent);
-    }
-
-    const prompt = `Classify this email. Respond with only one word: OA_INVITE, REJECTION, STATUS_UPDATE, or OTHER.\n\nEmail:\n${emailContent.substring(0, 1000)}`;
-    
-    const result = await promptSession.prompt(prompt);
+    const result = await callAI('CLASSIFY_EMAIL', emailContent);
     console.log('JobMail AI: AI Classification:', result);
     
     if (result.includes('OA_INVITE')) {
@@ -88,29 +90,15 @@ function fallbackClassification(emailContent) {
 
 async function summarizeEmail(emailContent) {
   try {
-    if (typeof ai !== 'undefined' && ai.summarizer) {
-      const canSummarize = await ai.summarizer.capabilities();
-      if (canSummarize.available === 'readily') {
-        const session = await ai.summarizer.create({
-          type: 'key-points',
-          format: 'plain-text',
-          length: 'short'
-        });
-        const summary = await session.summarize(emailContent);
-        session.destroy();
-        console.log('JobMail AI: Generated summary with AI');
-        return summary;
-      } else {
-        console.log('JobMail AI: Summarizer not ready, using fallback');
-      }
-    }
+    const summary = await callAI('SUMMARIZE_EMAIL', emailContent);
+    console.log('JobMail AI: Generated summary with AI');
+    return summary;
   } catch (error) {
     console.error('JobMail AI: Summarizer error:', error);
+    const maxLength = 200;
+    const trimmed = emailContent.substring(0, maxLength);
+    return trimmed.length < emailContent.length ? trimmed + '...' : trimmed;
   }
-  
-  const maxLength = 200;
-  const trimmed = emailContent.substring(0, maxLength);
-  return trimmed.length < emailContent.length ? trimmed + '...' : trimmed;
 }
 
 function extractEmailData(emailRow) {
@@ -265,8 +253,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 (async function init() {
-  await initializeAI();
-  
+  const script = document.createElement('script');
+  script.src = chrome.runtime.getURL('ai-bridge.js');
+  document.head.appendChild(script);
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startObserver);
   } else {
